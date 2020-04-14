@@ -1,14 +1,15 @@
 package main
 
 import (
-	"net/http"
 	"gopkg.in/yaml.v2"
+	"net/http"
 )
 
 type pathToURL struct {
 	Path string
-	URL string
+	URL  string
 }
+
 // MapHandler will return an http.HandlerFunc (which also
 // implements http.Handler) that will attempt to map any
 // paths (keys in the map) to their corresponding URL (values
@@ -21,6 +22,7 @@ func MapHandler(pathsToUrls map[string]string, fallback http.Handler) http.Handl
 		url := pathsToUrls[r.URL.Path]
 		if url != "" {
 			http.Redirect(w, r, url, http.StatusSeeOther)
+			return
 		}
 		fallback.ServeHTTP(w, r)
 	}
